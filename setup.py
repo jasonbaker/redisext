@@ -18,7 +18,10 @@ setup(name='redisext',
       include_package_data=True,
       zip_safe=True,
       install_requires=[
-          # -*- Extra requirements: -*-
+          'redis',
+      ],
+      tests_require=[
+          'mock',
       ],
       entry_points="""
       # -*- Entry points: -*-
