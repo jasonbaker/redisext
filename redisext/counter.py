@@ -1,6 +1,9 @@
 from datetime import date, datetime
 
 class DailyRollingCounter(object):
+    """
+    Create a counter that will count something over a rolling 30-day period.
+    """
     def __init__(self, redis, key, days=30):
         self.days = days
         self.key = key
@@ -16,6 +19,10 @@ class DailyRollingCounter(object):
         return datetime.strptime(strdate, '%Y%m%d').date()
 
     def value(self):
+        """
+        Get the current value of the counter.  Note that this will prune old
+        records.
+        """
         hashdata = self.redis.hgetall(self.key)
         timekeys = [(key, int(count)) for (key, count)
                     in hashdata.iteritems() if key.startswith('counter@')]
