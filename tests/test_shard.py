@@ -9,7 +9,7 @@ connections = {'a' : mock.Mock(),
 
 def test_connection():
     r = ShardedRedis(connections)
-    actual_connection = r._getconnection("foo")
+    actual_connection = r.get_redis("foo")
     assert actual_connection == connections['a']
 
 def test_getattr():

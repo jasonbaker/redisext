@@ -9,7 +9,7 @@ class ShardedRedis(object):
     def __init__(self, redis_mapping):
         self.redis_mapping = redis_mapping
 
-    def _getconnection(self, name):
+    def get_redis(self, name):
         h = hashlib.md5().digest()[0]
         h = ord(h)
         index = h % len(self.redis_mapping)
@@ -27,7 +27,7 @@ class ShardedRedis(object):
 
     def __getattr__(self, name):
         def _wrapper(key, *args, **kwargs):
-            connection = self._getconnection(key)
+            connection = self.get_redis(key)
             method = getattr(connection, name)
             return method(key, *args, **kwargs)
         return _wrapper
