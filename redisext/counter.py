@@ -1,5 +1,7 @@
 from datetime import date, datetime
 
+from redisext.util import pipeline
+
 class DailyRollingCounter(object):
     """
     Create a counter that will count something over a rolling 30-day period.
@@ -37,7 +39,7 @@ class DailyRollingCounter(object):
                 unused_keys.append(key)
 
         # prune old keys
-        pipe = self.redis.pipeline()
+        pipe = pipeline(self.redis, self.key)
         for hashkey in unused_keys:
             pipe.hdel(self.key, hashkey)
         pipe.execute()

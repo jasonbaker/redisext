@@ -28,7 +28,12 @@ class TestDailyRollingCounter(object):
         keyvalue = self.redis.hget('foo', hashkey)
         assert keyvalue is None
 
-class TestDailyRollingCounterSharded(object):
+class TestDailyRollingCounterSharded(TestDailyRollingCounter):
     def setup(self):
-        super(TestDailyRollingCounter, self).setup()
+        TestDailyRollingCounter.setup(self)
+        self.singleredis = self.redis
         self.redis = ShardedRedis({'a' : self.redis})
+
+    def teardown(self):
+        self.singleredis.flushdb()
+        self.singleredis.connection.disconnect()
