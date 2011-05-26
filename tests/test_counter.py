@@ -28,6 +28,9 @@ class TestDailyRollingCounter(object):
         keyvalue = self.redis.hget('foo', hashkey)
         assert keyvalue is None
 
+    def test_count0(self):
+        assert self.counter.value() == 0
+
 class TestDailyRollingCounterSharded(TestDailyRollingCounter):
     def setup(self):
         TestDailyRollingCounter.setup(self)
